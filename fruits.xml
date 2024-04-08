@@ -1,33 +1,38 @@
+<?xml version="1.0"?>
 <baskets>
-    <basket number="B1">
+
+    <basket>
       <basketNumber>B1</basketNumber>
       <basketOwner>AN1</basketOwner>
       <fruit name="Apple">2</fruit>
       <fruit name="Orange">4</fruit>
       <fruit name="Banana">5</fruit>
       <fruit name="Grapes">6</fruit>
-      <fruit name="Pineapple">5</fruit>
+      <fruit name="Pineapple">1</fruit>
     </basket>
-    <basket number="B2">
+
+    <basket>
       <basketNumber>B2</basketNumber>
       <basketOwner>AN2</basketOwner>
       <fruit name="Apple">3</fruit>
       <fruit name="Orange">6</fruit>
-      <fruit name="Banana">3</fruit>
+      <fruit name="Banana">20</fruit>
       <fruit name="Grapes">2</fruit>
-      <fruit name="Pineapple">1</fruit>
+      <fruit name="Pineapple">4</fruit>
     </basket>
-    <basket number="B3">
-      <basketNumber>B2</basketNumber>
+    
+    <basket>
+      <basketNumber>B3</basketNumber>
       <basketOwner>AN3</basketOwner>
       <fruit name="Apple">2</fruit>
       <fruit name="Orange">1</fruit>
       <fruit name="Banana">5</fruit>
       <fruit name="Grapes">4</fruit>
-      <fruit name="Pineapple">6</fruit>
+      <fruit name="Pineapple">3</fruit>
     </basket>
-    <basket number="B4">
-      <basketNumber>B2</basketNumber>
+
+    <basket>
+      <basketNumber>B4</basketNumber>
       <basketOwner>AN4</basketOwner>
       <fruit name="Apple">5</fruit>
       <fruit name="Orange">1</fruit>
@@ -35,13 +40,15 @@
       <fruit name="Grapes">7</fruit>
       <fruit name="Pineapple">1</fruit>
     </basket>
-    <basket number="B5">
-      <basketNumber>B2</basketNumber>
+
+    <basket>
+      <basketNumber>B5</basketNumber>
       <basketOwner>AN5</basketOwner>
       <fruit name="Apple">3</fruit>
       <fruit name="Orange">3</fruit>
       <fruit name="Banana">5</fruit>
-      <fruit name="Grapes">1</fruit>
-      <fruit name="Pineapple">2</fruit>
+      <fruit name="Grapes">2</fruit>
+      <fruit name="Pineapple">6</fruit>
     </basket>
+    
 </baskets>

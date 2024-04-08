@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    /* your styles here */
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #e6f2ff;
+      margin: 0;
+      padding: 0;
+    }
+
+   .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #007bff;
+    }
+
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      width: 100%;
+    }
+
+    input[type="number"] {
+      flex-basis: calc(49% - 10px);
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #007bff;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    button {
+      flex-basis: 100%;
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #0069d9;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+   .back button{
+      background-color: #f51e1e;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Modify Fruits in Basket</h1>
+
+    <!-- Add a link to navigate to the modify.html file with the basket ID as a query parameter -->
+    <form id="fruitForm" action="modify.php" method="post">
+      <!-- Add the basket ID input field -->
+      <input type="hidden" id="basketNumber" name="basketNumber" value="" />
+
+
+      <!-- Add the input fields for each fruit category -->
+      <div id="fruitFields"></div>
+
+      <!-- Add the submit button -->
+      <button type="submit">Save Changes</button>
+    </form>
+    <a href="index.html" class="back"><button> back</button></a>
+
+    <script>
+      // Get the basket ID from the URL query parameter
+      const basketId = new URLSearchParams(window.location.search).get("basketId");
+
+      // Set the value of the basketId input field to the basket ID
+      document.querySelector('#basketNumber').value = basketId;
+
+      // Use the XMLHttpRequest object to load the XML file
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', 'fruits.xml', true);
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          // Parse the XML file
+          const xmlDoc = new DOMParser().parseFromString(xhr.responseText, 'text/xml');
+
+          // Find the basket with the matching ID
+          const baskets = xmlDoc.getElementsByTagName('basket');
+          let basket = null;
+          for (let i = 0; i < baskets.length; i++) {
+            if (baskets[i].getElementsByTagName('basketNumber')[0].textContent == basketId) {
+              basket = baskets[i];
+              break;
+            }
+          }
+
+          // Display the current number of fruits in each category in the form
+          const fruits = basket.getElementsByTagName('fruit');
+          let fruitFields = '';
+          for (let i = 0; i < fruits.length; i++) {
+            const fruit = fruits[i];
+            const fruitName = fruit.getAttribute('name');
+            fruitFields += `<div>
+                              <label for="fruit_${fruitName}">${fruitName}:</label>
+                              <input type="number" id="fruit_${fruitName}" name="${fruitName}" value="${fruit.textContent}" />
+                            </div>`;
+          }
+          document.querySelector('#fruitFields').innerHTML = fruitFields;
+    
+        }
+      };
+      xhr.send();
+
+      // Add event listener to the form
+      document.querySelector('#fruitForm').addEventListener('submit', function(event) {
+        console.log('Form submission event listener executed');
+        event.preventDefault();
+
+        // Validate the input fields
+        const inputs = document.querySelectorAll('#fruitForm input[type="number"]');
+        let isValid = true;
+        for (let i = 0; i < inputs.length; i++) {
+          const input = inputs[i];
+          if (input.value.trim() === '') {
+            isValid = false;
+            input.setCustomValidity('Please enter a value');
+          } else {
+            input.setCustomValidity('');
+          }
+        }
+
+        // If the form is valid, submit it
+        if (isValid) {
+          const formData = new FormData(event.target);
+          const xhr = new XMLHttpRequest();
+          xhr.open('POST', 'modify.php', true);
+          xhr.onload = () => {
+            if (xhr.status === 200) {
+              console.log(xhr.responseText);
+              alert('Fruits updated successfully');
+            }
+          };
+          xhr.send(formData);
+        }
+      });
+    </script>
+</body>
+</html>

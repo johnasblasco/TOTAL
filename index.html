@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+    *{
+      font-family: "Fredoka";
+      text-align: center;
+      margin:0;
+      padding:0;
+      box-sizing: border-box;
+    }
+    table{
+      width:100%;
+    }
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+
+    th{background-color:gray;}
+    
+    th, td {
+      padding: 5px;
+    }
+    #modify{
+      
+      width: 70px;
+      height: 40px;
+      background-color: #007bff;
+      color: aliceblue;
+      border: none;
+    }
+    #modify:hover{
+      cursor: pointer;
+      background-color: #0653a5;
+    }
+
+.anf button{
+      margin-top: 2%;
+      width: 200px;
+      height: 50px;
+      background-color: #007bff;
+      color: aliceblue;
+      border: none;
+      border-radius: 20px;
+    }
+.anf button:hover{
+      cursor: pointer;
+      background-color: #0653a5;
+    }
+    
+
+  </style>
+</head>
+<body>
+  <h1>Fruit Basket</h1>
+  <table id="basketTable">
+    <thead>
+      <tr>
+        <!-- Generate table headers dynamically -->
+        <template id="fruitHeaderTemplate">
+          
+        </template>
+        <!-- End of table headers template -->
+      </tr>
+    </thead>
+    <tbody id="basketTableBody">
+      <!-- Table body will be populated using AJAX -->
+    </tbody>
+  </table>
+
+  <a href="add.html" class="anf"><button>Add new Fruit</button></a>
+
+  <script>
+   let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = () => {
+      if (xhttp.readyState === XMLHttpRequest.DONE) {
+        if (xhttp.status === 200) {
+          useXML(xhttp.responseXML);
+        }
+      }
+    }
+    xhttp.open("GET", "fruits.xml", true);
+    xhttp.send();
+
+    const useXML = (xml) => {
+      let doc = xml;
+      let root = doc.firstElementChild;
+      let baskets = root.children;
+
+      // Get the fruit header template
+      let fruitHeaderTemplate = document.querySelector("#fruitHeaderTemplate");
+
+      // Add the "Basket Number" and "Basket Owner" columns to the table header
+      let TDbasketNumber = document.createElement("th");
+      let TDbasketOwner = document.createElement("th");
+      TDbasketNumber.innerHTML = "Basket Number";
+      TDbasketOwner.innerHTML = "Basket Owner";
+      let thead = document.querySelector("thead");
+      thead.appendChild(TDbasketNumber);
+
+      // Generate the table headers
+      for (let fruit of baskets[0].getElementsByTagName("fruit")) {
+        let fruitName = fruit.getAttribute("name");
+        let th = document.createElement("th");
+        th.innerHTML = fruitName;
+        fruitHeaderTemplate.content.appendChild(th);
+      }
+
+      // Add the generated table headers to the table
+      thead.appendChild(TDbasketNumber);
+      thead.appendChild(TDbasketOwner);
+      thead.appendChild(fruitHeaderTemplate.content);
+      
+
+      // Calculate the total for each fruit type
+      let totalFruits = {};
+
+      for (let basket of baskets) {
+        let fruits = basket.getElementsByTagName("fruit");
+
+        for (let fruit of fruits) {
+          let fruitName = fruit.getAttribute("name");
+          let fruitValue = parseInt(fruit.innerHTML);
+
+          // Add the fruit to the totalFruits object if it doesn't exist
+          if (!totalFruits[fruitName]) {
+            totalFruits[fruitName] = 0;
+          }
+
+          // Update the total for the fruit
+          totalFruits[fruitName] += fruitValue;
+        }
+      }
+      //total fruits headings 
+      
+      let THtotalFruits = document.createElement("th");
+      THtotalFruits.innerHTML = "Total Fruits";
+      thead.appendChild(THtotalFruits);
+      
+      // action dito
+
+      let THAction = document.createElement("th");
+      THAction.innerHTML = "Action";
+      thead.appendChild(THAction);
+
+
+      // Generate the table rows
+      for (let basket of baskets) {
+        let basketNumber = basket.children[0].innerHTML;
+        let basketOwner = basket.children[1].innerHTML;
+        let fruits = basket.getElementsByTagName("fruit");
+
+        let Tbody = document.querySelector("#basketTableBody");
+        let TR = document.createElement("tr");
+        
+
+        let TDbasketNumber = document.createElement("td");
+        let TDbasketOwner = document.createElement("td");
+
+        TDbasketNumber.innerHTML = basketNumber;
+        TDbasketOwner.innerHTML = basketOwner;
+        //basket owner and basket number to
+        TR.appendChild(TDbasketNumber);
+        TR.appendChild(TDbasketOwner);
+
+        // Create a new td element for each fruit category
+        for (let i = 0; i < fruits.length; i++) {
+          let fruit = fruits[i];
+          let fruitName = fruit.getAttribute("name");
+          let fruitValue = parseInt(fruit.innerHTML);
+
+          let TDfruit = document.createElement("td");
+          TDfruit.innerHTML = fruitValue;
+
+          // Add the fruit td element to the row
+          TR.appendChild(TDfruit);
+          
+          
+        }
+
+        // Create a td element for the total number of fruits in the basket
+        let TDtotalFruits = document.createElement("td");
+        let totalFruitsInBasket = 0;
+
+        for (let i = 0; i < fruits.length; i++) {
+          let fruit = fruits[i];
+          totalFruitsInBasket += parseInt(fruit.innerHTML);
+        }
+
+        TDtotalFruits.innerHTML = totalFruitsInBasket;
+        TR.appendChild(TDtotalFruits);
+
+        let TDaction = document.createElement("td");
+        let BTNaction = document.createElement("button");
+        BTNaction.setAttribute("id","modify");
+        BTNaction.innerHTML = "Modify";
+        BTNaction.addEventListener("click", () => {
+          window.location.href = "modify.html?basketId=" + basketNumber;
+        });
+
+        
+        TDaction.appendChild(BTNaction);
+        TR.appendChild(TDaction);
+
+        Tbody.appendChild(TR);
+        
+      }
+
+      // Generate the table footer
+      let TR = document.createElement("tr");
+
+      let TDno = document.createElement("td");
+      let TDbasketowner = document.createElement("td");
+      TDbasketowner.innerHTML = "Total Fruits"
+
+      //append to tr
+      TR.appendChild(TDno);
+      TR.appendChild(TDbasketowner);
+
+      for (let fruitName in totalFruits) {
+        let TD = document.createElement("td");
+        TD.innerHTML = totalFruits[fruitName];
+        TR.appendChild(TD);
+      }
+
+      let Tfoot = document.createElement("tfoot");
+      Tfoot.appendChild(TR);
+      document.querySelector("#basketTable").appendChild(Tfoot);
+
+    // Iterate through each row in the table body
+    let rows = document.querySelectorAll('#basketTable tbody tr');
+
+    let maxFruits = 0;
+
+    rows.forEach((row) => {
+      let totalFruitsInRow = 0;
+
+      // Iterate through each cell in the row, excluding the "Action" and "Total Fruits" columns
+      let cellsInRow = row.querySelectorAll('td:nth-child(n+3):not(:last-child)');
+      cellsInRow.forEach((cell) => {
+        let fruitValue = parseInt(cell.textContent);
+        totalFruitsInRow += fruitValue;
+
+        if (fruitValue > 5) {
+          cell.style.backgroundColor = 'blue';
+        } else {
+          cell.style.backgroundColor = 'red';
+        }
+      });
+
+      // Update the maxFruits variable if the total number of fruits in the row is greater than the current max
+      if (totalFruitsInRow > maxFruits) {
+        maxFruits = totalFruitsInRow;
+      }
+    });
+
+      // Set the background color of the row with the most fruits to yellow
+    rows.forEach((row) => {
+      let totalFruitsInRow = 0;
+
+      let cellsInRow = row.querySelectorAll('td:nth-child(n+3):not(:last-child)');
+      cellsInRow.forEach((cell) => {
+        totalFruitsInRow += parseInt(cell.textContent);
+      });
+
+      if (totalFruitsInRow === maxFruits) {
+        cellsInRow.forEach((cell) => {
+          cell.style.backgroundColor = 'yellow';
+        });
+      }
+    });
+
+
+
+    };
+
+  </script>
+</body>
+</html>

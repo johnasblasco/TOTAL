@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+    *{
+      font-family: "Fredoka";
+      text-align: center;
+      margin:0;
+      padding:0;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+  <h1>Add New Fruit Category</h1>
+  <form id="addFruitCategoryForm">
+    <label for="fruitName">Fruit Name:</label>
+    <input type="text" id="fruitName" name="fruitName" required>
+    <br>
+    <button type="submit">Save</button>
+  </form>
+
+  <script>
+    document.getElementById('addFruitCategoryForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const fruitName = document.getElementById('fruitName').value;
+
+      // Send an AJAX request to the server to add the new fruit category and fruits to the basket
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', 'add.php', true);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          // Display an alert message
+          alert('Fruit category added successfully!');
+
+          // Redirect the user to the index.html page
+          window.location.href = 'index.html';
+        } else {
+          console.error(xhr.responseText);
+        }
+      };
+      xhr.send(`fruitName=${fruitName}`);
+    });
+  </script>
+</body>
+</html>
