@@ -14,11 +14,11 @@
     <basket>
       <basketNumber>B2</basketNumber>
       <basketOwner>AN2</basketOwner>
-      <fruit name="Apple">30</fruit>
+      <fruit name="Apple">20</fruit>
       <fruit name="Orange">6</fruit>
       <fruit name="Banana">2</fruit>
       <fruit name="Grapes">2</fruit>
-      <fruit name="Pineapple">4</fruit>
+      <fruit name="Pineapple">50</fruit>
     </basket>
     
     <basket>
@@ -37,18 +37,18 @@
       <fruit name="Apple">5</fruit>
       <fruit name="Orange">1</fruit>
       <fruit name="Banana">2</fruit>
-      <fruit name="Grapes">7</fruit>
-      <fruit name="Pineapple">1</fruit>
+      <fruit name="Grapes">4</fruit>
+      <fruit name="Pineapple">8</fruit>
     </basket>
 
     <basket>
       <basketNumber>B5</basketNumber>
       <basketOwner>AN5</basketOwner>
-      <fruit name="Apple">3</fruit>
+      <fruit name="Apple">6</fruit>
       <fruit name="Orange">3</fruit>
       <fruit name="Banana">5</fruit>
       <fruit name="Grapes">20</fruit>
-      <fruit name="Pineapple">10</fruit>
-    </basket>
+      <fruit name="Pineapple">622</fruit>
+   </basket>
     
 </baskets>

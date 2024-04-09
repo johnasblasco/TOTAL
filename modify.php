@@ -1,54 +1,64 @@
 <?php
-// Check if the form is submitted
+// Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    echo"<script>console.log( " . print_r($_POST) . " ) </script>";
-    // Retrieve basket number from the form
-    $basketNumber = $_POST["basketNumber"];
-    // Retrieve the updated fruit quantities
-    $fruitQuantities = $_POST["fruits"];
-
     // Load the XML file
-    $xml = new DOMDocument();
-    if ($xml->load("fruits.xml")) {
-        // Find the basket with the matching ID
-        $baskets = $xml->getElementsByTagName("basket");
-        $basketFound = false;
-        foreach ($baskets as $basket) {
-            $basketNode = $basket->getElementsByTagName("basketNumber")->item(0);
-            if ($basketNode->nodeValue == $basketNumber) {
-                $basketFound = true;
-                // Update fruit quantities
-                $fruits = $basket->getElementsByTagName("fruit");
-                foreach ($fruits as $fruit) {
-                    $fruitName = $fruit->getAttribute("name");
-                    foreach ($fruitQuantities as $fruitKey => $fruitValue) {
-                        if ($fruitName == $fruitKey) {
-                            $fruit->nodeValue = $fruitValue;
-                            break;
+    $xml = simplexml_load_file("fruits.xml");
+
+    // Debugging: Print POST data
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
+
+    // Get basket number from form data
+    $basketNumber = $_POST["basketNumber"];
+
+    // Debugging: Print basket number
+    echo "Basket Number: $basketNumber<br>";
+
+    // Find the basket in XML with the matching basket number
+    foreach ($xml->children() as $basket) {
+        if ($basket->basketNumber == $basketNumber) {
+            // Debugging: Print basket before modification
+            echo "Basket Before Modification:<br>";
+            echo "<pre>";
+            print_r($basket);
+            echo "</pre>";
+
+            // Update fruits based on form data
+            foreach ($_POST as $key => $value) {
+                // Check if the key starts with "fruit_"
+                if (strpos($key, 'fruit_') === 0) {
+                    // Extract fruit name from the key
+                    $fruitName = substr($key, strlen('fruit_'));
+
+                    // Debugging: Print fruit name and value
+                    echo "Fruit: $fruitName, Value: $value<br>";
+
+                    // Update fruit value in XML
+                    foreach ($basket->fruit as $fruitNode) {
+                        if ($fruitNode['name'] == $fruitName) {
+                            $fruitNode[0] = $value;
                         }
                     }
                 }
-
-                // Save the changes back to the XML file
-                if ($xml->save("fruits.xml")) {
-                    // Send a success message
-                    echo "Fruits updated successfully in PHP";
-                    exit(); // Exit after successful update
-                } else {
-                    echo "Failed to save changes to XML file";
-                }
             }
-        }
 
-        // If basket is not found, send an error message
-        if (!$basketFound) {
-            echo "Basket not found";
+            // Debugging: Print basket after modification
+            echo "Basket After Modification:<br>";
+            echo "<pre>";
+            print_r($basket);
+            echo "</pre>";
+
+            // Save changes back to XML file
+            $xml->asXML("fruits.xml");
+
+            // Redirect back to index.html
+            header("Location: index.html");
+            exit;
         }
-    } else {
-        echo "Failed to load XML file";
     }
-} else {
-    // If the form is not submitted, send an error message
-    echo "Form not submitted";
+
+    // If basket number not found, display error
+    echo "Basket not found.";
 }
 ?>
