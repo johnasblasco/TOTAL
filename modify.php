@@ -1,9 +1,9 @@
 <?php
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    echo"<script>console.log( " . print_r($_POST) . " ) </script>";
     // Retrieve basket number from the form
     $basketNumber = $_POST["basketNumber"];
-    
     // Retrieve the updated fruit quantities
     $fruitQuantities = $_POST["fruits"];
 

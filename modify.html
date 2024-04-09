@@ -170,7 +170,7 @@
           const xhr = new XMLHttpRequest();
           xhr.open('POST', 'modify.php', true);
           xhr.onload = () => {
-            if (xhr.status === 200) {
+            if (xhr.status == 200) {
               console.log(xhr.responseText);
               alert('Fruits updated successfully');
               window.location.href = 'index.html';
