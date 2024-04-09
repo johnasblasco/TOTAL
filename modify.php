@@ -1,43 +1,54 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-// Validate and sanitize input
-$basketNumber = isset($_POST['basketNumber'])? htmlspecialchars($_POST['basketNumber']) : '';
-$fruits = $_POST;
-unset($fruits['basketNumber']);
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve basket number from the form
+    $basketNumber = $_POST["basketNumber"];
+    
+    // Retrieve the updated fruit quantities
+    $fruitQuantities = $_POST["fruits"];
 
-// Load the XML file
-$xmlDoc = new DOMDocument();
-if (!$xmlDoc->load('fruits.xml')) {
-    die('Error: Unable to load XML file');
-}
+    // Load the XML file
+    $xml = new DOMDocument();
+    if ($xml->load("fruits.xml")) {
+        // Find the basket with the matching ID
+        $baskets = $xml->getElementsByTagName("basket");
+        $basketFound = false;
+        foreach ($baskets as $basket) {
+            $basketNode = $basket->getElementsByTagName("basketNumber")->item(0);
+            if ($basketNode->nodeValue == $basketNumber) {
+                $basketFound = true;
+                // Update fruit quantities
+                $fruits = $basket->getElementsByTagName("fruit");
+                foreach ($fruits as $fruit) {
+                    $fruitName = $fruit->getAttribute("name");
+                    foreach ($fruitQuantities as $fruitKey => $fruitValue) {
+                        if ($fruitName == $fruitKey) {
+                            $fruit->nodeValue = $fruitValue;
+                            break;
+                        }
+                    }
+                }
 
-// Find the basket with the matching ID
-$baskets = $xmlDoc->getElementsByTagName('basket');
-$basketFound = false;
-foreach ($baskets as $basket) {
-    if ($basket->getElementsByTagName('basketNumber')[0]->textContent == $basketNumber) {
-        $basketFound = true;
-        // Update the number of fruits in each category
-        foreach ($fruits as $fruitName => $fruitCount) {
-            $fruitElements = $basket->getElementsByTagName($fruitName);
-            foreach ($fruitElements as $fruitElement) {
-                $fruitElement->nodeValue = $fruitCount;
+                // Save the changes back to the XML file
+                if ($xml->save("fruits.xml")) {
+                    // Send a success message
+                    echo "Fruits updated successfully in PHP";
+                    exit(); // Exit after successful update
+                } else {
+                    echo "Failed to save changes to XML file";
+                }
             }
         }
-        break;
+
+        // If basket is not found, send an error message
+        if (!$basketFound) {
+            echo "Basket not found";
+        }
+    } else {
+        echo "Failed to load XML file";
     }
+} else {
+    // If the form is not submitted, send an error message
+    echo "Form not submitted";
 }
-
-// Save the updated XML file
-if ($basketFound && !$xmlDoc->save('fruits.xml')) {
-    die('Error: Unable to save XML file');
-}
-else{
-  $xmlDoc->save('fruits.xml');
-}
-
-// Send a response back to the client
-echo 'Fruits updated successfully';
 ?>
