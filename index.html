@@ -46,16 +46,40 @@
       border: none;
       border-radius: 20px;
     }
-.anf button:hover{
+    .anf button:hover{
       cursor: pointer;
       background-color: #0653a5;
+
+    }.dnf button{
+      margin-top: 2%;
+      width: 200px;
+      height: 50px;
+      background-color: #ff0800;
+      color: aliceblue;
+      border: none;
+      border-radius: 20px;
+    }
+    .dnf button:hover{
+      cursor: pointer;
+      background-color: #a51106;
+    }
+    .header{
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 10px;
+      margin: 10px 10px 10px 0px;
     }
     
 
   </style>
 </head>
 <body>
-  <h1>Fruit Basket</h1>
+  
+  <div class="header">   
+  <h1>Fruit Basket</h1> 
+  <a href="add.html" class="anf"><button>Add new Fruit</button></a>
+  <a href="delete.html" class="dnf"><button>Delete Fruit</button></a>
+  </div>
   <table id="basketTable">
     <thead>
       <tr>
@@ -70,8 +94,6 @@
       <!-- Table body will be populated using AJAX -->
     </tbody>
   </table>
-
-  <a href="add.html" class="anf"><button>Add new Fruit</button></a>
 
   <script>
    let xhttp = new XMLHttpRequest();

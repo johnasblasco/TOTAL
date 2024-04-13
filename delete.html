@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Fruit Category</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+        body {
+            font-family: "Fredoka", sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f5f9;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-top: 50px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            text-align: center;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #dcdcdc;
+            width: 200px;
+        }
+
+        button[type="submit"] {
+            background-color: #3498db;
+            width: 220px;
+            margin-left: 90px;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        a button {
+            background-color: #f71202;
+            width: 220px;
+            margin-top: 1%;
+            margin-left: 90px;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        a button:hover {
+            background-color: #b11105;
+        }
+    </style>
+</head>
+<body>
+  <h1>Delete Fruit Category</h1>
+  <form id="deleteFruitCategoryForm">
+      <label for="fruitToDelete">Fruit Name:</label>
+      <input type="text" id="fruitToDelete" name="fruitToDelete" required>
+      <br>
+      <button type="submit">Delete</button>
+  </form>
+  <a href="index.html"><button>Back</button></a>
+
+  <script>
+document.getElementById('deleteFruitCategoryForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  var fruitToDelete = document.getElementById('fruitToDelete').value;
+
+  console.log('Form submitted');
+  console.log('Fruit to delete: ' + fruitToDelete);
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'delete.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      var response = xhr.responseText;
+      console.log(response);
+      console.log(typeof response);
+      if (response === 'success') {
+        console.log("Successfully deleted fruit category");
+        // window.location.reload(); // Reload the page after successful deletion
+      } else {
+        console.error("Failed to delete fruit category: " + response);
+      }
+    } else {
+      console.error("Failed to delete fruit category. Status: " + xhr.status);
+    }
+  };
+  console.log(xhr.send('fruitToDelete=' + fruitToDelete));
+});
+  </script>
+</body>
+</html>

@@ -5,21 +5,21 @@
       <basketNumber>B1</basketNumber>
       <basketOwner>AN1</basketOwner>
       <fruit name="Apple">2</fruit>
-      <fruit name="Orange">4</fruit>
+      <fruit name="Orange">4</fruit>  
       <fruit name="Banana">5</fruit>
       <fruit name="Grapes">6</fruit>
-      <fruit name="Pineapple">1</fruit>
-    </basket>
+      <fruit name="Pineapple">12</fruit>
+    <fruit name="Talonganisa">21</fruit><fruit name="Eggplant">1</fruit></basket>
 
     <basket>
       <basketNumber>B2</basketNumber>
       <basketOwner>AN2</basketOwner>
-      <fruit name="Apple">20</fruit>
+      <fruit name="Apple">1</fruit>
       <fruit name="Orange">6</fruit>
       <fruit name="Banana">2</fruit>
       <fruit name="Grapes">2</fruit>
-      <fruit name="Pineapple">50</fruit>
-    </basket>
+      <fruit name="Pineapple">5</fruit>
+    <fruit name="Talonganisa">0</fruit><fruit name="Eggplant">0</fruit></basket>
     
     <basket>
       <basketNumber>B3</basketNumber>
@@ -29,7 +29,7 @@
       <fruit name="Banana">5</fruit>
       <fruit name="Grapes">4</fruit>
       <fruit name="Pineapple">3</fruit>
-    </basket>
+    <fruit name="Talonganisa">0</fruit><fruit name="Eggplant">0</fruit></basket>
 
     <basket>
       <basketNumber>B4</basketNumber>
@@ -39,7 +39,7 @@
       <fruit name="Banana">2</fruit>
       <fruit name="Grapes">4</fruit>
       <fruit name="Pineapple">8</fruit>
-    </basket>
+    <fruit name="Talonganisa">0</fruit><fruit name="Eggplant">1</fruit></basket>
 
     <basket>
       <basketNumber>B5</basketNumber>
@@ -48,7 +48,7 @@
       <fruit name="Orange">3</fruit>
       <fruit name="Banana">5</fruit>
       <fruit name="Grapes">20</fruit>
-      <fruit name="Pineapple">622</fruit>
-   </basket>
+      <fruit name="Pineapple">1</fruit>
+   <fruit name="Talonganisa">1</fruit><fruit name="Eggplant">2</fruit></basket>
     
 </baskets>
